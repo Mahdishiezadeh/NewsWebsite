@@ -1,0 +1,298 @@
+﻿@model NewsWebsite.ViewModels.Home.HomePageViewModel
+@using NewsWebsite.Common
+@using NewsWebsite.ViewModels.Newsletter
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/js/Ajax.js"></script>
+<!-- ##### Hero Area Start ##### -->
+<section class="hero--area section-padding-60">
+    @*در اینجا چک میکنیم آیا خبری وجود دارد یا خیر ؟*@
+    @*اگر پراپرتی نیوز ویو مدل تعدادش مخالف با صفر بود *@
+    @if (Model.News.Count() != 0)
+    {
+        @*کلاس کانتینر درون این ایف قرار میگیرد *@
+        <div class="container">
+            <div class="row no-gutters">
+                <div class="col-12 col-md-7 col-lg-8">
+                    <div class="tab-content">
+                        @*چون آیدی و مقداردهی آن مهم است از این کانتر برای مقداردهی کمک میگیریم
+                            id="post-1"   *@
+                        @{int i = 1;}
+                        @*حال بایست  به کمک حلقه فوریچ ، دیو ها با آیدی پست به تعداد خبرها تکرار شود
+                            <div class="tab-pane fade show active" id="post-1" role="tabpanel" aria-labelledby="post-1-tab">
+                             را نگه داشته و بقیه را پاک میکنیم *@
+                        @foreach (var item in Model.News)
+                        {
+                            @*فقط اگر پست اول با آیدی یک بود کلاس اکتیو داشته باشد
+                                آیدی قسمت پست - ثابت و عدد با متغییر آی در فوریچ تغییر کند*@
+                            <div class="tab-pane fade show @(i==1?"active":"")" id="@("post-"+i)" role="tabpanel" aria-labelledby="@("post-"+i+"-tab")">
+                                <!-- Single Feature Post -->
+                                <!---آدرس عکس ها در اینجا قرار میدهیم-->
+                                <div class="single-feature-post video-post bg-img" style="background-image: url(/newsImage/@item.ImageName);">
+                                    <!-- Post Content -->
+                                    <!-- دسته بندی خبر را نیز اینجا قرار میدهیم-->
+                                    <div class="post-content">
+                                        <a href="#" class="post-cata">@item.NameOfCategories</a>
+                                        <!--در این خط کد ابتدا آدرس خبر و سپس عنوان آن را مقداردهی میکنیم-->
+                                        <a href="/@item.NewsId/@item.Url" class="post-title">@item.Title </a>
+                                        <div class="post-meta d-flex float-left">
+                                            <a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> @item.NumberOfComments</a>
+                                            <a href="#"><i class="fa fa-eye" aria-hidden="true"></i> @item.NumberOfVisit</a>
+                                            <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> @item.NumberOfLike</a>
+                                            <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> @item.NumberOfDisLike</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- در اینجا تاریخ انتشار خبر را میخواهیم نمایش دهیم -->
+                                    <span class="video-duration">@item.PublishDateTime.ConvertMiladiToShamsi("dd MMMM yyyy")</span>
+                                </div>
+                            </div>
+                            i++;
+                        }
+
+
+                    </div>
+                </div>
+                @{ i = 1;}
+                <div class="col-12 col-md-5 col-lg-4">
+                    <ul class="nav vizew-nav-tab" role="tablist">
+                        <!--اکنون به سراغ تگ های li
+                         میرویم و فقط یک مورد را نگه داشته و بقیه را پاک میکنیم و آن را داخل حلقه فوریچ قرار میدهیم-->
+                        @foreach (var item in Model.News)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(i==1?"active":"")" id="post-1-tab" data-toggle="pill" href="@("#post-"+i)" role="tab" aria-controls="post-1" aria-selected="true">
+                                    <!-- Single Blog Post -->
+                                    <div class="single-blog-post style-2 d-flex align-items-center">
+                                        <div class="post-thumbnail">
+                                            <img src="~/newsImage/@item.ImageName" alt="@item.ImageName">
+                                        </div>
+                                        <div class="post-content">
+                                            <h6 class="post-title">@item.Title</h6>
+                                            <div class="post-meta d-flex justify-content-between">
+                                                <span><i class="fa fa-comments-o" aria-hidden="true"></i> @item.NumberOfComments</span>
+                                                <span><i class="fa fa-eye" aria-hidden="true"></i> @item.NumberOfVisit</span>
+                                                <span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> @item.NumberOfLike</span>
+                                                <span><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> @item.NumberOfDisLike</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            i++;
+                        }
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
+</section>
+<!-- ##### Hero Area End ##### -->
+<!-- ##### Trending Posts Area Start ##### -->
+<section class="trending-posts-area">
+    <div id="MostViewedNewsDiv" class="container">
+        @await Html.PartialAsync("_MostViewedNews", Model.MostViewedNews)
+    </div>
+</section>
+<!-- ##### Trending Posts Area End ##### -->
+<!-- ##### Vizew Post Area Start ##### -->
+<section class="vizew-post-area mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-7 col-lg-8">
+                <div class="all-posts-area">
+                    @if (Model.Videos.Count() != 0)
+                    {
+                        <!-- Section Heading -->
+                        <div class="section-heading style-2">
+                            <h4> جدیدترین ویدیوها </h4>
+                            <div class="line"></div>
+                        </div>
+                        <div class="featured-post-slides owl-carousel mb-30 direction-ltr">
+                            @foreach (var item in Model.Videos)
+                            {
+
+                                <div class="single-feature-post video-post bg-img" style="background-image: url(/posters/@item.Poster);">
+                                    <a href="Videos/@item.VideoId" class="btn play-btn"><i class="fa fa-play" aria-hidden="true"></i></a>
+                                    <div class="post-content">
+
+                                        <a href="Videos/@item.VideoId" class="post-title">@item.Title</a>
+                                    </div>
+                                    <span class="video-duration direction-rtl">@item.PublishDateTime.ConvertMiladiToShamsi("dd MMMM yyyy")</span>
+                                </div>
+
+                            }
+                        </div>
+                            }
+                            <div class="row mt-5">
+                                @if (Model.InternalNews.Count() != 0)
+                                {
+                                    <div class="col-12 col-lg-6">
+                                        <!-- Section Heading -->
+                                        <div class="section-heading style-2">
+                                            <h5>جدیدترین اخبار داخلی</h5>
+                                            <div class="line"></div>
+                                        </div>
+
+                                        <!-- Sports Video Slides -->
+                                        <div class="sport-video-slides owl-carousel mb-50 direction-ltr">
+                                            @foreach (var item in Model.InternalNews)
+                                            {
+                                                <div class="single-post-area">
+                                                    <div class="post-thumbnail">
+                                                        <img src="~/newsImage/@item.ImageName" alt="@item.ImageName">
+                                                        <span class="video-duration direction-rtl">@item.PublishDateTime.ConvertMiladiToShamsi("dd MMMM yyyy")</span>
+                                                    </div>
+                                                    <div class="post-content">
+                                                        <a href="#" class="post-cata cata-sm cata-primary">@item.NameOfCategories</a>
+                                                        <a href="/@item.NewsId/@item.Url" class="post-title"> @item.Title </a>
+                                                        <div class="post-meta d-flex">
+                                                            <a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> @item.NumberOfComments</a>
+                                                            <a href="#"><i class="fa fa-eye" aria-hidden="true"></i> @item.NumberOfVisit</a>
+                                                            <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> @item.NumberOfLike</a>
+                                                            <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> @item.NumberOfDisLike</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (Model.ForeignNews.Count() != 0)
+                                {
+                                    <div class="col-12 col-lg-6">
+                                        <!-- Section Heading -->
+                                        <div class="section-heading style-2">
+                                            <h5>جدیدترین اخبار خارجی</h5>
+                                            <div class="line"></div>
+                                        </div>
+
+                                        <!-- Business Video Slides -->
+                                        <div class="business-video-slides owl-carousel mb-50 direction-ltr">
+                                            @foreach (var item in Model.ForeignNews)
+                                            {
+                                                <div class="single-post-area">
+                                                    <div class="post-thumbnail">
+                                                        <img src="~/newsImage/@item.ImageName" alt="@item.ImageName">
+                                                        <span class="video-duration direction-rtl">@item.PublishDateTime.ConvertMiladiToShamsi("dd MMMM yyyy")</span>
+                                                    </div>
+                                                    <div class="post-content">
+                                                        <a href="#" class="post-cata cata-sm cata-primary">@item.NameOfCategories</a>
+                                                        <a href="/@item.NewsId/@item.Url" class="post-title"> @item.Title </a>
+                                                        <div class="post-meta d-flex">
+                                                            <a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> @item.NumberOfComments</a>
+                                                            <a href="#"><i class="fa fa-eye" aria-hidden="true"></i> @item.NumberOfVisit</a>
+                                                            <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> @item.NumberOfLike</a>
+                                                            <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> @item.NumberOfDisLike</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+
+
+                            <!-- Section Heading -->
+                            <div class="section-heading style-2">
+                                <h4>آخرین اخبار</h4>
+                                <div class="line"></div>
+                            </div>
+                            @*در اینجا چک میکنیم خبری داریم ؟*@
+                            @if (Model.News.Count() == 0)
+                            {
+                                <p class="alert alert-info text-center">هیچ خبری منتشر نشده است</p>
+                            }
+                            else
+                            {
+                                @*چون قصد داریم فقط پنج خبر را دریافت کنیم از متد تیک استفاده کردیم *@
+                                foreach (var item in Model.News.Take(5))
+                                {
+                                    <div class="single-post-area mb-30">
+                                        <div class="row align-items-center">
+                                            <div class="col-12 col-lg-6">
+                                                <!-- Post Thumbnail -->
+                                                <div class="post-thumbnail">
+                                                    <img src="~/newsImage/@item.ImageName" alt="@item.ImageName">
+
+                                                    <!-- Video Duration -->
+                                                    <!---در اینجا زمان انتشار خیر را نمایش میدهیم-->
+                                                    <span class="video-duration">@item.PublishDateTime.Value.ToString("HH:mm")</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <!-- Post Content -->
+                                                <div class="post-content mt-0">
+                                                    <a href="#" class="post-cata cata-sm cata-success">@item.NameOfCategories</a>
+                                                    <a href="/@item.NewsId/@item.Url" class="post-title mb-2">
+                                                        @item.Title
+                                                    </a>
+                                                    <div class="post-meta d-flex align-items-center mb-2">
+                                                        <a href="#" class="post-author">@item.AuthorName</a>
+                                                        <i class="fa fa-circle" aria-hidden="true"></i>
+
+                                                        <a href="#" class="post-date">@item.PublishDateTime.ConvertMiladiToShamsi("dd MMMM yyyy")</a>
+                                                    </div>
+                                                    <p class="mb-2">
+                                                        <!--برای آنکه آبسترکت را به ما نشان دهد حتما در نیوز ریپازیتوری
+                                         آبسترکت را در دو بخش سلکت و ویومدل در متد گت پیجینیت فراخوانی کنیم
+                                        Abstract=item.NewsGroup.First().Abstract,
+                                        n.Abstract,
+                                           -->
+                                                        @item.Abstract
+                                                    </p>
+                                                    <div class="post-meta d-flex float-left">
+                                                        <a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> @item.NumberOfComments</a>
+                                                        <a href="#"><i class="fa fa-eye" aria-hidden="true"></i> @item.NumberOfVisit</a>
+                                                        <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> @item.NumberOfLike.</a>
+                                                        <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> @item.NumberOfDisLike</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            <!-- Single Post Area -->
+
+
+                        </div>
+            </div>
+
+            <div class="col-12 col-md-5 col-lg-4">
+                <div class="sidebar-area">
+
+                    <!-- ***** MostPopularNews***** -->
+                    @if (Model.MostPopularNews.Count() != 0)
+                    {
+                        @await Html.PartialAsync("_MostPopularNews", Model.MostPopularNews)
+                    }
+
+                    <!--*****NewsLetter*****-->
+                    @await Html.PartialAsync("_RegisterInNewsletter",new NewsletterViewModel()) 
+                    <!-- ***** Single Widget ***** -->
+                    <!---چون قرار است محتویات این تگ دیو را با کمک ایجکس آپدیت کنیم برای آن آیدی قرار دادیم-->
+                    <div id="MostTalkNewsDiv">
+
+                        @await Html.PartialAsync("_MostTalkNews", Model.MostTalkNews)
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- ##### Vizew Psot Area End ##### -->

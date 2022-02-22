@@ -1,0 +1,34 @@
+﻿@model NewsWebsite.ViewModels.News.NewsCategoriesViewModel
+
+<ul>
+    @*داخل متغییر کتگوریز : زیر دسته هایی قرار گرفته است که توسط این حلقه
+        @foreach (var item in Model.NewsCategoriesViewModel.Categories)
+       در ویو کریت اور آپدیت پیمایش شده است. *@
+@foreach (var item in Model.Categories)
+{
+    <li>
+        @*داخل کتگوری آیدی ما آیدی دسته ها را قرار میدهیم*@
+    @if (Model.CategoryIds != null)
+    {
+        if (Model.CategoryIds.Contains(item.id))
+        {///name="CategoryIds"در اینجا نام با پراپرتی تعریف شده در ویومدل نیوز یکسان است
+            <input type="checkbox" name="CategoryIds" value="@item.id" checked /> @item.title
+        }
+        else
+        {
+            <input type="checkbox" name="CategoryIds" value="@item.id" /> @item.title
+        }
+    }
+
+    else
+    {
+        <input type="checkbox" name="CategoryIds" value="@item.id" /> @item.title
+    }
+
+    @{ Model.Categories = item.subs;}
+        @*مدل رو هم به پارشیال ویو برای نمایش درختی ارسال کردیم*@
+    @await Html.PartialAsync("_SubCategories", Model)
+</li>
+}
+
+</ul>

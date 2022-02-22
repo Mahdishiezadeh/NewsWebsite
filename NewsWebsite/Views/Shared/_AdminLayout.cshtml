@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+    <meta name="author" content="Creative Tim">
+    <title>پنل مدیریت سایت خبری</title>
+    <!-- Favicon -->
+    <link href="/assets/img/favicon.png" rel="icon" type="image/png">
+    <!-- Icons -->
+    <link href="/assets/vendor/nucleo/css/nucleo.css" rel="stylesheet">
+    <link href="/assets/vendor/fontawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <!-- Argon CSS -->
+    <link type="text/css" href="/assets/css/argon.css?v=1.0.0" rel="stylesheet">
+    <script src="/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/Ajax.js"></script>
+    Loading
+    <link href="~/lib/loading/build/default.css" rel="stylesheet" />
+    <link href="~/lib/loading/build/please-wait.css" rel="stylesheet" />
+    <script src="~/lib/loading/build/please-wait.min.js"></script>
+
+    <!-- Sweetalert2 -->
+    <link href="~/lib/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/lib/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link href="~/css/bootstrap-fileinput.css" rel="stylesheet" />
+    <script src="~/js/bootstrap-fileinput.min.js"></script>
+    <!-- DateTimePicker -->
+    <link href="~/lib/bootstrap.datetimepicker/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap.datetimepicker/js/jquery.md.bootstrap.datetimepicker.js"></script>
+
+    <link href="~/css/bootstrap-fileinput.css" rel="stylesheet" />
+    <script src="~/js/bootstrap-fileinput.min.js"></script>
+
+    <!-- Bootstrap Table -->
+    <link href="/assets/vendor/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="/assets/vendor/bootstrap-table/dist/bootstrap-table.js"></script>
+    <script src="~/assets/vendor/bootstrap-table/dist/extensions/export/tableExport.js"></script>
+    <script src="~/assets/vendor/bootstrap-table/dist/bootstrap-table-locale-all.js"></script>
+    <script src="~/assets/vendor/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
+</head>
+<body>
+    <!-- Sidenav -->
+    <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
+        <div class="container-fluid">
+            <!-- Toggler -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Brand -->
+            <a class="navbar-brand pt-0" href="./index.html">
+                <img src="/assets/img/Logo.png" class="navbar-brand-img" alt="...">
+                پنل مدیریت میزفا
+            </a>
+            <!-- User -->
+            <ul class="nav align-items-center d-md-none">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="media align-items-center">
+                            <span class="avatar avatar-sm rounded-circle">
+                                <img alt="Image placeholder" src="/assets/img/avatar.jpg">
+                            </span>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
+                        <a href="./examples/profile.html" class="dropdown-item">
+                            <i class="ni ni-single-02"></i>
+                            <span>نمایه من</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#!" class="dropdown-item">
+                            <i class="ni ni-user-run"></i>
+                            <span>خروج</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <!-- Collapse -->
+            <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                <!-- Collapse header -->
+                <div class="navbar-collapse-header d-md-none">
+                    <div class="row">
+                        <div class="col-9 collapse-brand">
+                            <a href="./index.html">
+                                <img src="~/assets/img/Logo.png"> پنل مدیریت 
+                            </a>
+                        </div>
+                        <div class="col-3 collapse-close">
+                            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle sidenav">
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form -->
+
+                <hr class="my-3">
+                <!-- Navigation -->
+                @await Html.PartialAsync("_AdminMenu")
+            </div>
+        </div>
+    </nav>
+    <!-- Main content -->
+    <div class="main-content">
+        @RenderBody()
+        <footer class="footer container-fluid">
+            <div class="row align-items-center justify-content-xl-between">
+                <div class="col-xl-6">
+                    <div class="copyright text-center text-xl-left text-muted">
+                        2019  &copy;  <a href="https://www.soleyghoon.Style" class="font-weight-bold ml-1" target="_blank">Soleyghoon</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/assets/js/argon.js?v=1.0.0"></script>
+
+
+    @(RenderSection("Scripts",false))
+</body>
+</html>
